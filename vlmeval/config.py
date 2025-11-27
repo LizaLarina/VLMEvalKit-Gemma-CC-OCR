@@ -1541,6 +1541,7 @@ qwen2vl_series = {
         min_pixels=1280 * 28 * 28,
         max_pixels=16384 * 28 * 28,
         use_custom_prompt=False,
+        attn_implementation="eager"
     ),
     "Qwen2.5-VL-7B-Instruct-ForVideo": partial(
         Qwen2VLChat,
@@ -1805,6 +1806,10 @@ gemma_series = {
         model_path="google/medgemma-4b-it",
         # load_in_4bit=True,
         # torch_dtype=torch.bfloat16 # Often good for performance, or torch.float16 if bfloat16 is not supported
+    ),
+    "MedGemma-Finetuned-Stage3": partial(
+        Gemma3,
+        model_path="/home/elizaveta_larina_bayer_com/thesis/VLMEvalKit/fine-tuned_models/medgemma-4b-it-stage3-setup-4-1-merged",
     )
 }
 
