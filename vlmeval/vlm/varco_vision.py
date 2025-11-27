@@ -70,11 +70,12 @@ class VarcoVision(BaseModel):
             self.set_grid(8)
 
     def use_custom_prompt(self, dataset):
+        if any(dataset.startswith(prefix) for prefix in
+               ['MMVet', 'MathVista', 'MathVerse', 'MathVision', 'LLaVABench']):
+            return True
         if DATASET_TYPE(dataset) == 'Y/N':
             return True
         if DATASET_TYPE(dataset) == 'MCQ':
-            return True
-        if DATASET_TYPE(dataset) == 'VQA' and not dataset.startswith('OCRBench'):
             return True
         return False
 
@@ -177,7 +178,8 @@ class VarcoVision(BaseModel):
             if msg["type"] == "text":
                 content += msg["value"]
             elif msg["type"] == "image":
-                img = Image.open(msg["value"]).convert("RGB")
+                with Image.open(msg["value"]) as img:
+                    img = img.convert("RGB")
                 images.append(img)
                 image_sizes.append(img.size)
                 content += f"{self.DEFAULT_IMAGE_TOKEN}\n"
