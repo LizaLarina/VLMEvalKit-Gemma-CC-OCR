@@ -1250,6 +1250,9 @@ qwen2vl_series = {
         min_pixels=1280 * 28 * 28,
         max_pixels=16384 * 28 * 28,
         use_custom_prompt=False,
+        torch_dtype=torch.bfloat16, # A100 (Ampere) supports bfloat16 natively for better numerical stability
+        load_in_4bit=True,          # Essential for fitting into 40GB VRAM
+        device_map="auto",          # Still useful to distribute components if needed
     ),
     "MiMo-VL-7B-SFT": partial(
         Qwen2VLChat,
@@ -1450,7 +1453,13 @@ gemma_series = {
     ),
     'Gemma3-4B': partial(Gemma3, model_path='google/gemma-3-4b-it'),
     'Gemma3-12B': partial(Gemma3, model_path='google/gemma-3-12b-it'),
-    'Gemma3-27B': partial(Gemma3, model_path='google/gemma-3-27b-it')
+    'Gemma3-27B': partial(Gemma3, model_path='google/gemma-3-27b-it'),
+    "MedGemma": partial(
+        Gemma3,
+        model_path="google/medgemma-4b-it",
+        # load_in_4bit=True,
+        # torch_dtype=torch.bfloat16 # Often good for performance, or torch.float16 if bfloat16 is not supported
+    )
 }
 
 aguvis_series = {
